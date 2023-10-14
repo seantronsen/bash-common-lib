@@ -15,6 +15,10 @@ function info() {
 	logger "[INFO]: $1"
 }
 
+function warning() {
+	logger "[WARNING]: $1"
+}
+
 function error() {
 	logger "[ERROR]: $1"
 	exit $2
@@ -44,11 +48,15 @@ function python_dependency_check() {
 function add-user-bin() {
 	if [ ! -d "$USER_BIN" ]; then
 		mkdir -vp "$USER_BIN"
+	else
+		echo "directory exists: '$USER_BIN'"
 	fi
 
-	if ! grep -qE 'export PATH=\"\$HOME/bin.*' .bashrc; then
+	if ! grep -qE 'export PATH=\"\$HOME/bin.*' "$SHELL_CONFIG"; then
 		echo "adding local '$HOME/bin' directory to path by appending to .bashrc"
 		echo "source $SHELL_CONFIG to activate changes"
 		echo 'export PATH="$HOME/bin:$PATH"' >>"$SHELL_CONFIG"
+	else
+		echo "PATH already configured to include user local bin directory: '$USER_BIN'"
 	fi
 }
