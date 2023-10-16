@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function logger() {
-	echo "[$(date -u) UTC] $1"
+	echo "[$(hostname)] [$(date -u) UTC] $1"
 }
 
 function info() {

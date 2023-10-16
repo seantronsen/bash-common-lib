@@ -3,16 +3,22 @@
 USER_BIN="$HOME/bin"
 SHELL_CONFIG="$HOME/.bashrc"
 
-LIB_DIR="$(dirname ${BASH_SOURCE[0]})"
+function script_dir() {
+	echo "$(realpath $(dirname ${BASH_SOURCE[0]}))"
+}
 
+LIB_DIR="$(script_dir)"
 for x in $LIB_DIR/*.bash; do
 	if [ ! "$(basename "$x")" == "lib.bash" ]; then
 		source "$x"
 	fi
 done
 
-if ls -a $(realpath $(dirname $BASH_SOURCE)) | grep -oqE "^\.git$"; then
-	info "bash-common-lib version: $(git rev-parse HEAD)"
+if ls -a "$LIB_DIR" | grep -oqE "^\.git$"; then
+	(
+		cd "$LIB_DIR"
+		info "bash-common-lib version: $(git rev-parse HEAD)"
+	)
 fi
 
 function binary_dependency_check() {
