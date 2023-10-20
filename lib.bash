@@ -1,8 +1,10 @@
 #!/bin/bash
 ################################################################################
 # Author: Sean Tronsen
-# Provide a set of reusable bash functions to be referenced in scripts utilizing
-# this library.
+# Provide a set of reusable bash functions to be referenced in scripts
+# utilizing this library. Functions which appear in this file are those which
+# by definition are not self-contained (reliance on functions from other
+# library files).
 #
 ################################################################################
 
@@ -38,6 +40,20 @@ if ls -a "$LIB_DIR" | grep -oqE "^\.git$"; then
 		info "bash-common-lib version: $(git rev-parse HEAD)"
 	)
 fi
+
+################################################################################
+# Output an error which denotes that the parent function has yet to be fully
+# implemented. Note this function call is only intended for use in quickly
+# scaffolding other functions and circling back later to finish the
+# definitions.
+# Outputs:
+# 	an unimplemented function error message.
+# Returns:
+# 	non-zero exit code
+################################################################################
+function not_implemented() {
+	error "attempted to execute a function which has yet to be implemented."
+}
 
 ################################################################################
 # Ensure that all arguments provided can be located within $PATH
@@ -78,6 +94,28 @@ function python_dependency_check() {
 			info "python dependency found: $arg"
 		else
 			error "python dependency not found: $arg"
+		fi
+	done
+}
+
+################################################################################
+# Check if all packages provided as arguments to the function are available on
+# the system. Status is logged for each dependency check. If any package is
+# unavailable, return an error status with logging information to the caller.
+# Arguments:
+#   $@: argument list where each element is a required dependency.
+# Outputs:
+#   status information about the presence of each package in the argument list.
+# Returns:
+#   0 if all specified packages were located
+#   non-zero with early termination if any package could not be located.
+################################################################################
+function rpm_dependency_check() {
+	for x in "$@"; do
+		if ! rpm -qi "$x"; then
+			error "unable to locate package: '$x'"
+		else
+			info "found package: '$x'"
 		fi
 	done
 }
