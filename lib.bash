@@ -112,7 +112,7 @@ function python_dependency_check() {
 ################################################################################
 function rpm_dependency_check() {
 	for x in "$@"; do
-		if ! rpm -qi "$x"; then
+		if ! rpm --quiet -qi "$x"; then
 			error "unable to locate package: '$x'"
 		else
 			info "found package: '$x'"

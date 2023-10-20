@@ -6,10 +6,12 @@
 ################################################################################
 
 ################################################################################
-# Provided a string argument, echo the content prepending with logging
-# information. Serves as the base formatter for higher level logging functions.
+# Provided a string argument and log kind, echo the content prepended with
+# logging information. Serves as the base formatter for higher level logging
+# functions.
 # Arguments:
-# 	$1: string content to be formatted and echoed back to the caller (or defaults
+# 	$1: log kind header
+# 	$2: string content to be formatted and echoed back to the caller (or defaults
 # 	to stdout)
 # Outputs:
 # 	provided string content with log formatting.
@@ -17,7 +19,7 @@
 # 	0
 ################################################################################
 function logger() {
-	echo "[$(hostname)] [$(date -u) UTC] $1"
+	echo "[$1][$(hostname)][$(date -u +'%Y-%m-%dT%H:%M:%S%z') UTC]: $2"
 }
 
 ################################################################################
@@ -30,7 +32,7 @@ function logger() {
 # 	0
 ################################################################################
 function info() {
-	logger "[INFO]: $1"
+	logger "INFO" "$1"
 }
 
 ################################################################################
@@ -43,7 +45,7 @@ function info() {
 # 	0
 ################################################################################
 function warning() {
-	logger "[WARNING]: $1"
+	logger "WARNING" "$1"
 }
 
 ################################################################################
@@ -56,6 +58,6 @@ function warning() {
 # 	0
 ################################################################################
 function error() {
-	logger "[ERROR]: $1"
+	logger "ERROR" "$1"
 	exit $2
 }
