@@ -68,10 +68,10 @@ function not_implemented() {
 ################################################################################
 function binary_dependency_check() {
 	for arg in "$@"; do
-		if [[ -z "$(which $arg)" ]]; then
-			error "dependency not found: '$arg'"
+		if which "$arg"; then
+			info "shell command dependency found: '$arg'"
 		else
-			info "dependency found: '$arg'"
+			error "dependency not found: '$arg'"
 		fi
 	done
 }
@@ -90,7 +90,7 @@ function binary_dependency_check() {
 function python_dependency_check() {
 	binary_dependency_check python3 pip
 	for arg in "$@"; do
-		if pip list | grep -oqE "^$arg "; then
+		if pip show --quiet "$arg"; then
 			info "python dependency found: $arg"
 		else
 			error "python dependency not found: $arg"

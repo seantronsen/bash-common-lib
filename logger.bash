@@ -49,15 +49,32 @@ function warning() {
 }
 
 ################################################################################
-# Echo back the provided string content as an 'error' log.
+# Echo back the provided string content as an 'error' log. Include a stack
+# trace.
 # Arguments:
-# 	$1: string text content
+#   $1: string text content
 # Outputs:
-# 	text content in 'error' log format
+#   text content in 'error' log format
 # Returns:
-# 	0
+#   0
 ################################################################################
 function error() {
-	logger "ERROR" "$1"
+	function formatter() {
+		logger "ERROR" "$1"
+
+	}
+	formatter "$1"
+	formatter "stack trace for error in $(realpath $0):"
+	local flag=1
+	local ix=0
+	while [ "$flag" != "0" ]; do
+		local result="$(caller $ix)"
+		if [ -z "$result" ]; then
+			local flag=0
+		else
+			formatter "$result"
+			let "ix++" || true
+		fi
+	done
 	exit $2
 }
