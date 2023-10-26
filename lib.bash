@@ -121,6 +121,29 @@ function rpm_dependency_check() {
 }
 
 ################################################################################
+# Check if all modules (mod/lmod) provided as arguments have been loaded by the
+# module management system. Status is logged for each check and if any are
+# unavailable, an error log and return status are generated and sent back to
+# the caller.
+# Arguments:
+# 	$@: list of modules to check load status
+# Outputs:
+# 	status information about the load-status for each specified module.
+# Returns:
+# 	0 if all specified modules are loaded
+# 	non-zero with early termination if any package could not be located.
+################################################################################
+function module_dependency_check() {
+	for x in "$@"; do
+		if ! module is-loaded "$x"; then
+			error "unable to locate module: '$x'"
+		else
+			info "found module: '$x'"
+		fi
+	done
+}
+
+################################################################################
 # Configure a local binary directory for the calling user and add the location
 # the the PATH environment variable within the configuration specified '.*rc"
 # file.
