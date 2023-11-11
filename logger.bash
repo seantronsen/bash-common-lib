@@ -76,5 +76,5 @@ function error() {
 			let "ix++" || true
 		fi
 	done
-	exit $2
+	exit 1
 }
