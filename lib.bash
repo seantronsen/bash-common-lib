@@ -16,6 +16,7 @@
 USER_BIN="${USER_BIN:="$HOME/bin"}"
 USER_SRC="${USER_SRC:="$HOME/sources"}"
 USER_DOTCONFIG="$HOME/.config"
+USER_FONTS="$HOME/.fonts"
 SHELL_CONFIG="${SHELL_CONFIG:="$HOME/.bashrc"}"
 
 ################################################################################
