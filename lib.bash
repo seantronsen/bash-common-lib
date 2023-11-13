@@ -36,12 +36,14 @@ for x in $LIB_DIR/*.bash; do
 	fi
 done
 
-if ls -a "$LIB_DIR" | grep -oqE "^\.git$"; then
-	(
-		cd "$LIB_DIR"
-		info "bash-common-lib version: $(git rev-parse HEAD)"
-	)
-fi
+function bash_common_lib_version() {
+	if ls -a "$LIB_DIR" | grep -oqE "^\.git$"; then
+		(
+			cd "$LIB_DIR"
+			info "bash-common-lib version: $(git rev-parse HEAD)"
+		)
+	fi
+}
 
 ################################################################################
 # Output an error which denotes that the parent function has yet to be fully
