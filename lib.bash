@@ -73,7 +73,7 @@ function not_implemented() {
 ################################################################################
 function binary_dependency_check() {
 	for arg in "$@"; do
-		if which "$arg"; then
+		if which "$arg" &> /dev/null ; then
 			info "shell command dependency found: '$arg'"
 		else
 			error "dependency not found: '$arg'"
